@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script
+    src="https://code.jquery.com/jquery-3.6.0.js"
+    ></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ass4</title>
+
+    <script>
+        $(()=>{
+                
+
+                $("#btn").click(()=>{
+                    console.log("hello2");
+
+                  let ip ={pincode:$("#pin").val()} ;
+                  
+                  let parameterstothefunction=
+                        { data:ip, 
+                          url: "http://localhost:900/login",
+                          type:'get',
+                          dataType: "json",
+                       
+                          success:(datagivenbyserver)=>{ 
+                              console.log( "data given by server in success" + datagivenbyserver.status)
+                              console.log( "data given by server in success" + datagivenbyserver.message)
+                              if(datagivenbyserver.status  === true )
+                              {
+                                       
+                                      
+                                       $("#msg").text(datagivenbyserver.message); //makeup
+                              } 
+                              else
+                              {
+                                    $("#msg").text("Not found");
+                              }
+                                                          
+                            
+                            },
+                          error:(errorgivenbyserver)=> { console.log("failed to contact server "+errorgivenbyserver)}
+                        }  ;
+                        
+                        //time to call the function
+                        console.log("is the function working");
+                        $.ajax(parameterstothefunction);
+
+                });
+
+        });
+        
+        </script>
+
+
+
+</head>
+<body>
+    <input type="text" id = "pin" placeholder="Enter the pincode">
+    <button type="button" id="btn">Click me</button>
+    <p id ="msg" >Do you know my Area</p>
+</body>
+</html>

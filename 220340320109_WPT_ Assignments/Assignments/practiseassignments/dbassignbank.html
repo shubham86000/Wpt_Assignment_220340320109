@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+
+$(()=>{
+      $("#acc").disabled=false;
+
+      //setting up on blur.. writing comments not a good idea.
+
+
+      //ON BLUR
+
+      $("#acc").blur(()=>{
+
+      //difficult things begin
+      //the below line is input
+      let y=$("#acc").val();
+
+      $("#acc").disabled=true;
+
+      let ajaxparams={
+        data:{ x:y},
+        url: "http://localhost:900/getbal",
+        type:'get',
+        dataType: "json",
+        success:(output)=>{
+
+      if(output.bankfoundstatus)
+      {
+
+      $("#msg").text(output.bankdetails.bal);
+      
+      }
+
+      else
+      {
+
+      $("#msg").text("Account Not Exist");
+
+      }
+      },
+        error:(error)=>{ console.log("failure " + error)}
+
+      };//end of the object creation for ajaxparams
+      $.ajax(ajaxparams);
+
+    });
+
+});
+
+
+
+</script>
+
+
+    <title>Document</title>
+
+</head>
+<body>
+    <input type="text" placeholder="Enter Accnum" id="acc">
+    <span id="msg">Not found</span>
+</body>
+</html>

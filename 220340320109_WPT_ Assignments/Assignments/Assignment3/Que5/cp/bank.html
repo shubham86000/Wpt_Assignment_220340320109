@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+
+    <script>
+
+$( ()=>{
+      $("#acc").disabled=false;
+
+      //ON BLUR
+
+      $("#acc").blur(()=>{
+
+      let y=$("#acc").val();
+
+      $("#acc").disabled=true;
+
+      let ajaxparams={
+        data:{ x:y},
+        url: "http://localhost:900/getbal",
+        type:'get',
+        dataType: "json",
+        success:(output)=>{
+
+      if(output.bankfoundstatus)
+      {
+
+      $("#msg").text(output.bankdetails.bal);
+      
+      }
+
+      else
+      {
+
+      $("#msg").text("Account details not found");
+
+      }
+      },
+        error:(error)=>{ console.log("failure " + error)}
+
+      };//end of the object creation for ajaxparams
+      $.ajax(ajaxparams);
+
+    });
+
+
+
+});
+
+
+    </script>
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" placeholder="Enter Acc Number" id="acc">
+    <span id="msg">Not Found</span>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <title>Document</title>
+    <style>
+      .em {
+        color: green; /* total stupid */
+      }
+      .nm {
+        color: blue;
+      }
+    </style>
+
+    <script>
+     $( ()=>{
+      $("#resourceno").disabled=false;
+
+      //setting up on blur.. writing comments not a good idea.
+
+
+      //ON BLUR
+
+      $("#resourceno").blur(()=>{
+
+      //difficult things begin
+      //the below line is input
+      let y=$("#resourceno").val();
+
+      $("#resourceno").disabled=true;
+
+      let ajaxparams={
+        data:{ x:y},
+        url: "http://localhost:900/getresource",
+        type:'get',
+        dataType: "json",
+        success:(output)=>{
+
+      if(output.resourcenofoundstatus)
+      {
+      $("#message").text("resource details found");
+
+      $("#resourcename").val(output.resourcedetails.resourcename);
+
+      $("#resourceprice").val(output.resourcedetails.price);
+
+
+      $("#contents").text(output.resourcedetails.resourceno+" "+output.resourcedetails.resourcename+" "+output.resourcedetails.price);
+      $('')
+      }
+
+      else
+      {
+
+      $("#message").text("resource details not found");
+      $("#resourcename").val("");
+      $("#resourceprice").val("");
+
+      }
+      },
+        error:(error)=>{ console.log("failure " + error)}
+
+      };//end of the object creation for ajaxparams
+      $.ajax(ajaxparams);
+
+    });
+
+      //ON CLICK UPDATE
+
+
+      $("#update").click(()=>{
+
+      //difficult things begin
+      //the below line is input
+      let x=$("#resourceno").val();
+      let y=$("#resourcename").val();
+      let z=$("#resourceprice").val();
+
+      $("#resourceno").disabled=false;
+
+      let ajaxparams={
+        data:{ a:x,b:y,c:z},
+        url: "http://localhost:900/update",
+        type:'get',
+        dataType: "json",
+        success:(output)=>{
+
+      if(output.resourcenofoundstatus)
+      {
+      $("#message").text("resource got updated");
+
+      }
+
+      else
+      {
+
+      $("#message").text("resource details not updated");
+      $("#resourcename").val("");
+      $("#resourceprice").val("");
+      $("#message").text("resource details not updated");
+
+      }
+      },
+        error:(error)=>{ console.log("failure " + error)}
+
+      };//end of the object creation for ajaxparams
+      $.ajax(ajaxparams);
+
+    });
+
+
+
+      // INSERT
+
+      $("#add").click(()=>{
+
+//difficult things begin
+//the below line is input
+let x=$("#resourceno").val();
+let y=$("#resourcename").val();
+let z=$("#resourceprice").val();
+
+document.querySelector("#resourceno").disabled=true;
+
+let ajaxparams={
+  data:{ a:x,b:y,c:z},
+  url: "http://localhost:900/insert",
+  type:'get',
+  dataType: "json",
+  success:(output)=>{
+
+if(output.resourcenofoundstatus)
+{
+$("#message").text("resource got Inserted");
+
+}
+
+else
+{
+
+$("#message").text("resource details not Inserted");
+//$("#resourcename").val("");
+// $("#resourceprice").val("");
+// $("#message").text("resource details not Inserted");
+
+}
+},
+  error:(error)=>{ console.log("failure " + error)}
+
+};//end of the object creation for ajaxparams
+$.ajax(ajaxparams);
+
+});
+
+
+//GET ALL
+
+$("#getall").click(()=>{
+
+//difficult things begin
+//the below line is input
+
+$("#resourceno").disabled=false;
+
+let ajaxparams={
+  data:{},
+  url: "http://localhost:900/getall",
+  type:'get',
+  dataType: "json",
+  success:(output)=>{ resources= output;
+    let resourcescontents="";
+	for(let i=0; i < resources.length;i++)
+	{
+	resourcescontents += "<br/>" + resources[i].resourceno + "  " + resources[i].resourcename + " " + resources[i].price;
+	}
+	$("#contents").html(resourcescontents);
+
+},
+  error:(error)=>{ console.log("failure " + error)}
+
+};//end of the object creation for ajaxparams
+$.ajax(ajaxparams);
+
+});
+
+     //end of the blur event on resourceno
+                 
+               
+            });
+    </script>
+  </head>
+  <body>
+    <input type="text" id="resourceno" placeholder="resource number"  >
+    <span id="message"> what happened</span>
+    <br />
+    <input type="text" id="resourcename" placeholder="resource name" >
+    <br />
+    <input type="text" id="resourceprice" placeholder="resource price" >
+    <br /><br /><button id="add">Add resource</button>
+    <button id="update">update resource</button>
+    <button id="getall">Get All</button>
+    <hr />
+    <p id="contents">all resources show it here</p>
+  </body>
+</html>

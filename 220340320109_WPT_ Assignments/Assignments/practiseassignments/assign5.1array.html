@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Que 2</title>
+    <script>
+        window.addEventListener("DOMContentLoaded",()=>{
+        const data = [10,20,30,40,50,60,70,80,90,100];
+        const btn1= document.querySelector("#btn1");
+        const btn2= document.querySelector("#btn2");
+            btn1.addEventListener('click',()=>{
+               
+                let msg1= document.querySelector("#msg1");
+                for(let i=0;i<data.length;i++)
+                {
+                    msg1.innerHTML += " "+data[i];
+                }
+            
+            });
+
+            btn2.addEventListener('click',()=>{
+                let msg1= document.querySelector("#msg2");
+                let sum=0;
+                for(let i=0;i<data.length;i++)
+                {
+                    sum+=data[i]
+                }
+             
+                msg2.innerHTML = sum;
+                
+            });
+
+
+        });
+    </script>
+</head>
+<body>
+    <button id ="btn1">Display Array Elemetns</button>
+    <button id ="btn2">Sum of Array Elemetns</button>
+    <br>
+   array:= <span id ="msg1"></span>
+    <br>
+   sum:= <span id ="msg2"></span>
+</body>
+</html>

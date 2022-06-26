@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <title>Document</title>
+    <style>
+      .em {
+        color: green; /* total stupid */
+      }
+      .nm {
+        color: blue;
+      }
+    </style>
+
+    <script>
+     $( ()=>{
+      $("#itemno").disabled=false;
+
+      //setting up on blur.. writing comments not a good idea.
+
+
+      //ON BLUR
+
+      $("#itemno").blur(()=>{
+
+      //difficult things begin
+      //the below line is input
+      let y=$("#itemno").val();
+
+      $("#itemno").disabled=true;
+
+      let ajaxparams={
+        data:{ x:y},
+        url: "http://localhost:900/getItem",
+        type:'get',
+        dataType: "json",
+        success:(output)=>{
+
+      if(output.itemnofoundstatus)
+      {
+      $("#message").text("item details found");
+
+      $("#itemname").val(output.itemdetails.itemname);
+
+      $("#itemprice").val(output.itemdetails.price);
+
+
+      $("#contents").text(output.itemdetails.itemno+" "+output.itemdetails.itemname+" "+output.itemdetails.price);
+      $('')
+      }
+
+      else
+      {
+
+      $("#message").text("item details not found");
+      $("#itemname").val("");
+      $("#itemprice").val("");
+
+      }
+      },
+        error:(error)=>{ console.log("failure " + error)}
+
+      };//end of the object creation for ajaxparams
+      $.ajax(ajaxparams);
+
+    });
+
+      //ON CLICK UPDATE
+
+
+      $("#update").click(()=>{
+
+      //difficult things begin
+      //the below line is input
+      let x=$("#itemno").val();
+      let y=$("#itemname").val();
+      let z=$("#itemprice").val();
+
+      $("#itemno").disabled=false;
+
+      let ajaxparams={
+        data:{ a:x,b:y,c:z},
+        url: "http://localhost:900/update",
+        type:'get',
+        dataType: "json",
+        success:(output)=>{
+
+      if(output.itemnofoundstatus)
+      {
+      $("#message").text("Item got updated");
+
+      }
+
+      else
+      {
+
+      $("#message").text("item details not updated");
+      $("#itemname").val("");
+      $("#itemprice").val("");
+      $("#message").text("item details not updated");
+
+      }
+      },
+        error:(error)=>{ console.log("failure " + error)}
+
+      };//end of the object creation for ajaxparams
+      $.ajax(ajaxparams);
+
+    });
+
+
+
+      // INSERT
+
+      $("#add").click(()=>{
+
+//difficult things begin
+//the below line is input
+let x=$("#itemno").val();
+let y=$("#itemname").val();
+let z=$("#itemprice").val();
+
+document.querySelector("#itemno").disabled=true;
+
+let ajaxparams={
+  data:{ a:x,b:y,c:z},
+  url: "http://localhost:900/insert",
+  type:'get',
+  dataType: "json",
+  success:(output)=>{
+
+if(output.itemnofoundstatus)
+{
+$("#message").text("Item got Inserted");
+
+}
+
+else
+{
+
+$("#message").text("item details not Inserted");
+//$("#itemname").val("");
+// $("#itemprice").val("");
+// $("#message").text("item details not Inserted");
+
+}
+},
+  error:(error)=>{ console.log("failure " + error)}
+
+};//end of the object creation for ajaxparams
+$.ajax(ajaxparams);
+
+});
+
+
+//GET ALL
+
+$("#getall").click(()=>{
+
+//difficult things begin
+//the below line is input
+
+$("#itemno").disabled=false;
+
+let ajaxparams={
+  data:{},
+  url: "http://localhost:900/getall",
+  type:'get',
+  dataType: "json",
+  success:(output)=>{ items= output;
+    let itemscontents="";
+	for(let i=0; i < items.length;i++)
+	{
+	itemscontents += "<br/>" + items[i].itemno + "  " + items[i].itemname + " " + items[i].price;
+	}
+	$("#contents").html(itemscontents);
+
+},
+  error:(error)=>{ console.log("failure " + error)}
+
+};//end of the object creation for ajaxparams
+$.ajax(ajaxparams);
+
+});
+
+     //end of the blur event on itemno
+                 
+               
+            });
+    </script>
+  </head>
+  <body>
+    <input type="text" id="itemno" placeholder="item number"  >
+    <span id="message"> what happened</span>
+    <br />
+    <input type="text" id="itemname" placeholder="item name" >
+    <br />
+    <input type="text" id="itemprice" placeholder="item price" >
+    <br /><br /><button id="add">Add Item</button>
+    <button id="update">update Item</button>
+    <button id="getall">Get All</button>
+    <hr />
+    <p id="contents">all items show it here</p>
+  </body>
+</html>

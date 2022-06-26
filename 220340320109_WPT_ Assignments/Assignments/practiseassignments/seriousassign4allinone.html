@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <script>
+
+
+       $( ()=>{
+      $("#empno").disabled=false;
+      
+
+      
+      
+      
+      //ON BLUR Event
+
+       $("#empno").blur(()=>{
+
+//difficult things begin
+//the below line is input
+let y=$("#empno").val();
+
+$("#empno").disabled=true;
+
+let ajaxparams={
+  data:{ x:y},
+  url: "http://localhost:900/getemp",
+  type:'get',
+  dataType: "json",
+  success:(output)=>{
+
+if(output.empfoundstatus)
+{
+$("#msg").text("emp details found");
+
+$("#ename").val(output.empdetails.ename);
+
+$("#deptid").val(output.empdetails.deptid);
+
+
+$("#msg1").text(output.empdetails.empno+" "+output.empdetails.ename+" "+output.empdetails.deptid);
+
+}
+
+else
+{
+
+$("#msg").text("emp details not found");
+$("#ename").val("");
+$("#deptid").val("");
+
+}
+},
+  error:(error)=>{ console.log("failure " + error)}
+
+};//end of the object creation for ajaxparams
+$.ajax(ajaxparams);
+
+});
+
+
+
+ // INSERT
+
+ $("#btn1").click(()=>{
+
+//difficult things begin
+//the below line is input
+let x=$("#empno").val();
+let y=$("#ename").val();
+let z=$("#deptid").val();
+
+document.querySelector("#empno").disabled=true;
+
+let ajaxparams={
+  data:{ a:x,b:y,c:z},
+  url: "http://localhost:900/add",
+  type:'get',
+  dataType: "json",
+  success:(output)=>{
+
+if(output.empfoundstatus)
+{
+$("#msg").text("emp got Inserted");
+
+}
+
+else
+{
+
+$("#msg").text("emp details not Inserted");
+//$("#itemname").val("");
+// $("#itemprice").val("");
+// $("#message").text("item details not Inserted");
+
+}
+},
+  error:(error)=>{ console.log("failure " + error)}
+
+};//end of the object creation for ajaxparams
+$.ajax(ajaxparams);
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    });
+
+    </script>
+</head>
+
+<body>
+    <input id="empno" type="text" placeholder="Enter empno">
+    <span id="msg">What Happens</span><br>
+
+    <input id="ename" type="text" placeholder="Enter empno"><br>
+    <input id="deptid" type="text" placeholder="Enter empno"><br>
+    <button id="btn1">Add</button>
+    <button id="btn2">Modify</button>
+    <button id="btn3">Delete</button>
+    <button id="btn4">Viewall</button><br>
+    <span id="msg1">show all detail</span>
+</body>
+</html>
