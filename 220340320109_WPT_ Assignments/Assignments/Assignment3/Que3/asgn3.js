@@ -2,7 +2,7 @@ const mysql = require('mysql2');
 
 let dbobject = {
     host: 'localhost',
-    user: 'kaustubh',
+    user: 'root',
     password: 'cdac',
     database: 'study',
     port: 3306
